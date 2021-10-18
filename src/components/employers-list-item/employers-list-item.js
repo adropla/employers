@@ -29,7 +29,7 @@ class EmployersListItem extends Component {
         return (
             <li className={classNames}>
                 <span className="list-group-item-label" onClick={this.onStar}>{name}</span>
-                <input type="text" className="list-group-item-input" defaultValue={salary + ' $'}/>
+                <input disabled type="text" className="list-group-item-input" defaultValue={salary + ' $'}/>
                 <div className="d-flex justify-content-center align-items-center">
                     <button 
                     type="button"

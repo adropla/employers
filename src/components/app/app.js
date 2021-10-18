@@ -16,7 +16,8 @@ class App extends Component {
                 {name: 'Иван Ф.', salary: 800, bonus: false, id: 1},
                 {name: 'Олег Н.', salary: 1200, bonus: false, id: 2},
                 {name: 'Антон З.', salary: 1800, bonus: true, id: 3}
-            ]
+            ],
+            maxId: 3
         }
     }
 
@@ -24,6 +25,19 @@ class App extends Component {
         this.setState(({data}) => {
             return {
                 data: data.filter(item => item.id !== id)
+            }
+        })
+    }
+
+    addItem = (state) => {
+        this.setState(({data, maxId}) => {
+            const newData = data.slice(0);
+            const currentId = maxId + 1;
+            newData.push({name: state.name, salary: +state.salary, bonus: false, id: currentId});
+            
+            return {
+                data: newData,
+                maxId: currentId,
             }
         })
     }
@@ -42,7 +56,8 @@ class App extends Component {
                 data={this.state.data}
                 onDelete={this.deleteItem}
                 />
-                <EmployersAddForm/>
+                <EmployersAddForm
+                onAdd={this.addItem}/>
             </div>
         );
     }
