@@ -13,11 +13,11 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-                {name: 'Иван Ф.', salary: 800, bonus: false, id: 1},
-                {name: 'Олег Н.', salary: 1200, bonus: false, id: 2},
-                {name: 'Антон З.', salary: 1800, bonus: true, id: 3}
+                {name: 'Иван Ф.', salary: 800, bonus: false, star: true, id: 1},
+                {name: 'Олег Н.', salary: 1200, bonus: false, star: false, id: 2},
+                {name: 'Антон З.', salary: 1800, bonus: true, star: false, id: 3}
             ],
-            maxId: 3
+            maxId: 3,
         }
     }
 
@@ -29,23 +29,42 @@ class App extends Component {
         })
     }
 
-    addItem = (state) => {
-        this.setState(({data, maxId}) => {
-            const newData = data.slice(0);
-            const currentId = maxId + 1;
-            newData.push({name: state.name, salary: +state.salary, bonus: false, id: currentId});
-            
+    addItem = ({name, salary}) => {
+        const newItem = {
+            name,
+            salary,
+            bonus: false,
+            id: this.state.maxId + 1
+        }
+        this.setState(({data}) => {
+            const newData = [...data, newItem];
             return {
                 data: newData,
-                maxId: currentId,
+                maxId: newItem.id
             }
-        })
+        });
+    }
+
+    onToggleProp = (id, prop) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, [prop]: !item[prop]}
+                }
+                return item
+            })
+        }))
+        
     }
 
     render() {
+        const empCount = this.state.data.length;
+        const bonusCount = this.state.data.filter(item => item.bonus).length;
         return (
             <div className="app">
-                <AppInfo/>
+                <AppInfo 
+                bonusCount={bonusCount}
+                empCount={empCount}/>
 
                 <div className="search-panel">
                     <SearchPanel/>
@@ -55,6 +74,7 @@ class App extends Component {
                 <EmployersList 
                 data={this.state.data}
                 onDelete={this.deleteItem}
+                onToggleProp={this.onToggleProp}
                 />
                 <EmployersAddForm
                 onAdd={this.addItem}/>

@@ -26,7 +26,6 @@ class EmployersAddForm extends Component {
     render() {
         const {name, salary} = this.state;
         const {onAdd} = this.props;
-        console.log(this.props);
 
         return (
             <div className="app-add-form">
@@ -52,7 +51,7 @@ class EmployersAddForm extends Component {
                     onClick={(e) => { 
                         e.preventDefault();
                         onAdd(this.state);
-                        this.clearInputs();
+                        this.clearInputs(); 
                         }}>Добавить</button>
                 </form>
             </div>
