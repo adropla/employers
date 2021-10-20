@@ -18,6 +18,8 @@ class App extends Component {
                 {name: 'Антон З.', salary: 1800, bonus: true, star: false, id: 3}
             ],
             maxId: 3,
+            term: '',
+            filter: 'all',
         }
     }
 
@@ -30,19 +32,21 @@ class App extends Component {
     }
 
     addItem = ({name, salary}) => {
-        const newItem = {
-            name,
-            salary,
-            bonus: false,
-            id: this.state.maxId + 1
-        }
-        this.setState(({data}) => {
-            const newData = [...data, newItem];
-            return {
-                data: newData,
-                maxId: newItem.id
+        if (name && salary) {
+            const newItem = {
+                name,
+                salary,
+                bonus: false,
+                id: this.state.maxId + 1
             }
-        });
+            this.setState(({data}) => {
+                const newData = [...data, newItem];
+                return {
+                    data: newData,
+                    maxId: newItem.id
+                }
+            });
+        }
     }
 
     onToggleProp = (id, prop) => {
@@ -57,9 +61,45 @@ class App extends Component {
         
     }
 
+    onUpdateSearch = (term) => {
+        this.setState({term})
+    } 
+
+    searchEmp = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+        return items.filter(item => {
+            return item.name.indexOf(term) > -1
+        });
+    }
+
+    filterEmp = (data, filter) => {
+        switch (filter) {
+            case 'star':
+                return data.filter((item) => {
+                    return item.star
+                });
+            case '1000':
+                return data.filter((item) => {
+                    return item.salary > 1000
+                });
+            default:
+                return data;
+        }
+    }
+
+    onFilter = (filter) => {
+        this.setState({filter});
+    }
+
     render() {
+        const {data, term, filter} = this.state;
         const empCount = this.state.data.length;
         const bonusCount = this.state.data.filter(item => item.bonus).length;
+        const filteredData = this.filterEmp(data, filter);
+        const visibleData = this.searchEmp(filteredData, term);
+
         return (
             <div className="app">
                 <AppInfo 
@@ -67,12 +107,12 @@ class App extends Component {
                 empCount={empCount}/>
 
                 <div className="search-panel">
-                    <SearchPanel/>
-                    <AppFilter/>
+                    <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
+                    <AppFilter filter={filter} onFilter={this.onFilter}/>
                 </div>
 
-                <EmployersList 
-                data={this.state.data}
+                <EmployersList  
+                data={visibleData}
                 onDelete={this.deleteItem}
                 onToggleProp={this.onToggleProp}
                 />

@@ -1,12 +1,11 @@
 import './employers-add-form.css'
 import { Component } from 'react'
-
 class EmployersAddForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
             name: '',
-            salary: 0,
+            salary: '',
         }
     }
 
@@ -19,8 +18,12 @@ class EmployersAddForm extends Component {
     clearInputs = () => {
         this.setState({
             name: '',
-            salary: 0
+            salary: ''
         })
+    }
+
+    showInputErrorMessage = () => {
+        
     }
 
     render() {
@@ -43,6 +46,7 @@ class EmployersAddForm extends Component {
                     placeholder="З/П в $?" 
                     name="salary"
                     value={salary}
+                    min="0"
                     onChange={this.onValueChange}/>
     
                     <button 
@@ -51,7 +55,11 @@ class EmployersAddForm extends Component {
                     onClick={(e) => { 
                         e.preventDefault();
                         onAdd(this.state);
-                        this.clearInputs(); 
+                        if (this.state.name && this.state.salary) {
+                            this.clearInputs(); 
+                        } else {
+                            this.showInputErrorMessage();
+                        }
                         }}>Добавить</button>
                 </form>
             </div>

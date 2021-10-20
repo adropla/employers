@@ -10,7 +10,7 @@ const EmployersListItem = (props) => {
     return (
         <li className={classNames}>
             <span className="list-group-item-label" onClick={onToggleProp} data-toggle='star'>{name}</span>
-            <input disabled type="text" className="list-group-item-input" defaultValue={salary + ' $'}/>
+            <input type="text" className="list-group-item-input" defaultValue={salary + ' $'}/>
             <div className="d-flex justify-content-center align-items-center">
                 <button 
                 type="button"
