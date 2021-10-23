@@ -91,6 +91,17 @@ class App extends Component {
 
     onFilter = (filter) => {
         this.setState({filter});
+    }   
+
+    onChangeSalary = (id, salary) => {
+        this.setState(({data}) => ({
+            data: data.map((item) => {
+                if (item.id === id) {
+                    return {...item, salary: salary}
+                }
+                return item;
+            })
+        }));
     }
 
     render() {
@@ -115,6 +126,7 @@ class App extends Component {
                 data={visibleData}
                 onDelete={this.deleteItem}
                 onToggleProp={this.onToggleProp}
+                onChangeSalary={this.onChangeSalary}
                 />
                 <EmployersAddForm
                 onAdd={this.addItem}/>

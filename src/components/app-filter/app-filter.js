@@ -18,7 +18,7 @@ const AppFilter = (props) => {
             <button type="button"
                     className={`btn ${activeClass}`}
                     onClick={() => onFilter(name)}
-                    name={name}>
+                    key={name}>
                     {label}
             </button>
         )
